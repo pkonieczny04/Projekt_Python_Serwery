@@ -94,10 +94,14 @@ class Client:
         try:
             # Pobiera produkty spełniające kryterium liczby początkowych liter
             products = self.server.get_entries(n_letters)
+            
+            # Sprawdzenie, czy lista jest pusta; jeśli tak, zwracamy None
+            if not products:
+                return None
+            
             # Oblicza sumę cen produktów
             total_price = sum(product.price for product in products)
-            # Zwraca sumę cen, jeśli są produkty spełniające kryterium, w przeciwnym razie None
-            return total_price if products else None
+            return total_price
         except TooManyProductsFoundError:
             # Obsługa wyjątku, gdy liczba wyników przekroczy limit
             return None
