@@ -1,0 +1,56 @@
+@startuml
+hide empty members
+left to right direction
+' Definicja klasy Product
+class Product {
+    + name: str
+    + price: float
+    + __init__(self, name: str, price: float): None
+    + __eq__(self, other: Product): bool
+    + __hash__(self): int
+}
+
+' Klasa abstrakcyjna Server
+abstract class Server {
+    + {static} n_max_returned_entries: int = 5
+    + get_entries(self, n_letters: int): List[Product]
+    - _get_all_products(self): List[Product]
+}
+
+' Klasa ListServer dziedzicząca po Server
+class ListServer {
+    - products: List[Product]
+    + __init__(self, products: List[Product]): None
+    + _get_all_products(self): List[Product]
+}
+
+' Klasa MapServer dziedzicząca po Server
+class MapServer {
+    - products: Dict[str, Product]
+    + __init__(self, products: List[Product]): None
+    + _get_all_products(self): List[Product]
+}
+
+' Klasa Client
+class Client {
+    + server: Server
+    + __init__(self, server: Server): None
+    + get_total_price(self, n_letters: Optional[int]): Optional[float]
+}
+
+' Klasa wyjątku TooManyProductsFoundError
+class TooManyProductsFoundError {
+    + TooManyProductsFoundError()
+}
+
+' Relacje między klasami
+Server <|-- ListServer
+Server <|-- MapServer
+Client --> Server : <<uses>>
+ListServer --> Product : <<uses>>
+MapServer --> Product : <<uses>>
+Server --> TooManyProductsFoundError : <<raises>>
+Client --> TooManyProductsFoundError : <<handles>>
+
+TooManyProductsFoundError --|> Exception
+@enduml
