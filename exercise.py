@@ -9,7 +9,7 @@ class Product:
         if not re.fullmatch(r'^[a-zA-Z]+\d+$', name):
             raise ValueError("Nazwa produktu musi składać się z liter, a następnie cyfr.")
         # Walidacja ceny - cena musi być dodatnia
-        if price <= 0:
+        if price < 0:
             raise ValueError("Cena produktu musi być dodatnia.")
         self.name = name  # Nazwa produktu
         self.price = price  # Cena produktu
